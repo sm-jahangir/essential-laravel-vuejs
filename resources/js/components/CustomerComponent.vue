@@ -4,7 +4,27 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Customer Component</div>
-
+                    <div class="m-3">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <strong>Search By: </strong>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                  <select v-model="queryField" class="form-control">
+                                    <option value="name">Name</option>
+                                    <option value="email">EMAIL</option>
+                                    <option value="phone">PHONE</option>
+                                    <option value="address">ADDRESS</option>
+                                    <option value="total">TOTAL</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <input type="text" v-model="query" class="form-control" placeholder="Search">
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                        
                        <table class="table table-hover table-borderd table-striped">
@@ -37,7 +57,7 @@
                        <pagination v-if="pagination.last_page > 1"
                             :pagination="pagination"
                             :offset="5"
-                            @paginate="getData()"
+                            @paginate="query === '' ? getData() : searchData()"
                             ></pagination>
                     </div>
                 </div>
@@ -51,9 +71,20 @@
     export default {
         data() {
             return {
+                query: "",
+                queryField: "name",
                 customers: [],
                 pagination: {
                         current_page:1,
+                }
+            }
+        },
+        watch: {
+            query: function(newQ, old){
+                if (newQ === "") {
+                    this.getData();
+                } else {
+                    this.searchData();
                 }
             }
         },
@@ -75,7 +106,22 @@
                     console.log(e);
                      this.$Progress.fail()
                 })
-            }
+            },
+            searchData() {
+                this.$Progress.start()
+                axios.get('/api/search/customer' + '/' + this.queryField + '/' + this.query + '?page=' + this.pagination.current_page)
+                .then(response => {
+                    this.customers = response.data.data;
+                    this.pagination = response.data.meta;
+                    console.log(response)
+                     this.$Progress.finish()
+                })
+                .catch(e => {
+                    console.log(e);
+                     this.$Progress.fail()
+                })
+            },
+
         },
     }
 </script>

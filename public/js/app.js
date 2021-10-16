@@ -2114,14 +2114,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      query: "",
+      queryField: "name",
       customers: [],
       pagination: {
         current_page: 1
       }
     };
+  },
+  watch: {
+    query: function query(newQ, old) {
+      if (newQ === "") {
+        this.getData();
+      } else {
+        this.searchData();
+      }
+    }
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -2142,6 +2173,22 @@ __webpack_require__.r(__webpack_exports__);
         console.log(e);
 
         _this.$Progress.fail();
+      });
+    },
+    searchData: function searchData() {
+      var _this2 = this;
+
+      this.$Progress.start();
+      axios.get('/api/search/customer' + '/' + this.queryField + '/' + this.query + '?page=' + this.pagination.current_page).then(function (response) {
+        _this2.customers = response.data.data;
+        _this2.pagination = response.data.meta;
+        console.log(response);
+
+        _this2.$Progress.finish();
+      })["catch"](function (e) {
+        console.log(e);
+
+        _this2.$Progress.fail();
       });
     }
   }
@@ -37971,6 +38018,91 @@ var render = function() {
               _vm._v("Customer Component")
             ]),
             _vm._v(" "),
+            _c("div", { staticClass: "m-3" }, [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-3" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.queryField,
+                            expression: "queryField"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.queryField = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "name" } }, [
+                          _vm._v("Name")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "email" } }, [
+                          _vm._v("EMAIL")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "phone" } }, [
+                          _vm._v("PHONE")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "address" } }, [
+                          _vm._v("ADDRESS")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "total" } }, [
+                          _vm._v("TOTAL")
+                        ])
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-7" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.query,
+                        expression: "query"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "text", placeholder: "Search" },
+                    domProps: { value: _vm.query },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.query = $event.target.value
+                      }
+                    }
+                  })
+                ])
+              ])
+            ]),
+            _vm._v(" "),
             _c(
               "div",
               { staticClass: "card-body" },
@@ -37981,7 +38113,7 @@ var render = function() {
                     staticClass: "table table-hover table-borderd table-striped"
                   },
                   [
-                    _vm._m(0),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -37999,7 +38131,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(customer.total))]),
                           _vm._v(" "),
-                          _vm._m(1, true)
+                          _vm._m(2, true)
                         ])
                       }),
                       0
@@ -38012,7 +38144,7 @@ var render = function() {
                       attrs: { pagination: _vm.pagination, offset: 5 },
                       on: {
                         paginate: function($event) {
-                          return _vm.getData()
+                          _vm.query === "" ? _vm.getData() : _vm.searchData()
                         }
                       }
                     })
@@ -38030,6 +38162,14 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("strong", [_vm._v("Search By: ")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
