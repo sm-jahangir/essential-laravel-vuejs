@@ -2134,6 +2134,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -2190,6 +2207,12 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.$Progress.fail();
       });
+    },
+    reload: function reload() {
+      this.$Progress.start();
+      this.getData();
+      this.query = "";
+      this.queryField = "name";
     }
   }
 });
@@ -38015,12 +38038,33 @@ var render = function() {
         _c("div", { staticClass: "col-md-12" }, [
           _c("div", { staticClass: "card" }, [
             _c("div", { staticClass: "card-header" }, [
-              _vm._v("Customer Component")
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "col" }, [
+                  _c("div", { staticClass: "float-right" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: { click: _vm.reload }
+                      },
+                      [
+                        _vm._v("Reload\n                                    "),
+                        _c("i", { staticClass: "fas fa-sync" })
+                      ]
+                    )
+                  ])
+                ])
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "m-3" }, [
               _c("div", { staticClass: "row" }, [
-                _vm._m(0),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-md-3" }, [
                   _c("div", { staticClass: "form-group" }, [
@@ -38113,7 +38157,7 @@ var render = function() {
                     staticClass: "table table-hover table-borderd table-striped"
                   },
                   [
-                    _vm._m(1),
+                    _vm._m(3),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -38131,7 +38175,7 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(customer.total))]),
                           _vm._v(" "),
-                          _vm._m(2, true)
+                          _vm._m(4, true)
                         ])
                       }),
                       0
@@ -38162,6 +38206,27 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("h4", [_vm._v("Customer Component")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-primary", attrs: { type: "button" } },
+      [
+        _vm._v("Add New Customer\n                                    "),
+        _c("i", { staticClass: "fas fa-plus" })
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

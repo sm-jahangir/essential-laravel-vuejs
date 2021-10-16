@@ -3,7 +3,24 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Customer Component</div>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <h4>Customer Component</h4>
+                            </div>
+                            <div class="col">
+                                <div class="float-right">
+
+                                    <button type="button" class="btn btn-primary">Add New Customer
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button @click="reload" type="button" class="btn btn-primary">Reload
+                                        <i class="fas fa-sync"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="m-3">
                         <div class="row">
                             <div class="col-md-2">
@@ -121,6 +138,12 @@
                      this.$Progress.fail()
                 })
             },
+            reload() {
+                this.$Progress.start()
+                this.getData();
+                this.query = "";
+                this.queryField = "name";
+            }
 
         },
     }
