@@ -17,6 +17,13 @@ const VueProgressBarOptions = {
 }
 
 Vue.use(VueProgressBar, VueProgressBarOptions)
+import Snotify, { SnotifyPosition } from 'vue-snotify'
+const Snotifyoptions = {
+  toast: {
+    position: SnotifyPosition.rightTop
+  }
+}
+Vue.use(Snotify, Snotifyoptions)
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
