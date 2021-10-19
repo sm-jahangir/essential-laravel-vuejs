@@ -20,6 +20,7 @@ class CreateCustomersTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->decimal('total', 8, 2)->default(000.00);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

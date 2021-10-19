@@ -2245,10 +2245,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      imagePreview: null,
       query: "",
       queryField: "name",
       customers: [],
@@ -2261,7 +2267,8 @@ __webpack_require__.r(__webpack_exports__);
         email: "",
         phone: "",
         address: "",
-        total: ""
+        total: "",
+        image: ""
       })
     };
   },
@@ -2322,6 +2329,19 @@ __webpack_require__.r(__webpack_exports__);
       this.form.reset();
       this.form.clear();
       $("#exampleModal").modal("show");
+    },
+    onFileChange: function onFileChange(event) {
+      this.form.image = event.target.files[0];
+      var reader = new FileReader();
+      reader.addEventListener("load", function () {
+        this.imagePreview = reader.result;
+      }.bind(this), false);
+
+      if (this.form.image) {
+        if (/\.(jpe?g|png|gif)$/i.test(this.form.image.name)) {
+          reader.readAsDataURL(this.form.image);
+        }
+      }
     },
     store: function store() {
       var _this3 = this;
@@ -38673,6 +38693,28 @@ var render = function() {
                             _vm.$set(_vm.form, "total", $event.target.value)
                           }
                         }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "image" } }, [
+                        _vm._v("Image")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control-file",
+                        attrs: {
+                          type: "file",
+                          name: "image",
+                          id: "image",
+                          placeholder: "image"
+                        },
+                        on: { change: _vm.onFileChange }
+                      }),
+                      _vm._v(" "),
+                      _c("img", {
+                        staticStyle: { width: "150px" },
+                        attrs: { src: _vm.imagePreview, alt: "" }
                       })
                     ]),
                     _vm._v(" "),

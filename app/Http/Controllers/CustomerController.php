@@ -32,6 +32,13 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $customer = new Customer();
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $ext = $image->extension();
+            $file = time().'.'.$ext;
+            $image->storeAs('public/customer', $file);
+            $customer->image = $file;
+        }
         $customer->name = $request->name;
         $customer->email = $request->email;
         $customer->phone = $request->phone;

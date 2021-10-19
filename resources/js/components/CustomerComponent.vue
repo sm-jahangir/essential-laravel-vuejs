@@ -119,6 +119,11 @@
                          <input type="number"
                            class="form-control" v-model="form.total" name="total" id="total" placeholder="Enter Your Amount">
                        </div>
+                       <div class="form-group">
+                         <label for="image">Image</label>
+                         <input type="file" @change="onFileChange" class="form-control-file" name="image" id="image" placeholder="image">
+                         <img style="width:150px;" :src="imagePreview" alt="">
+                       </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -182,6 +187,7 @@ import Form from 'vform'
     export default {
         data() {
             return {
+                imagePreview: null,
                 query: "",
                 queryField: "name",
                 customers: [],
@@ -195,6 +201,7 @@ import Form from 'vform'
                     phone: "",
                     address: "",
                     total: "",
+                    image: ""
                 }),
             }
         },
@@ -251,6 +258,18 @@ import Form from 'vform'
                 this.form.reset();
                 this.form.clear();
                 $("#exampleModal").modal("show");
+            },
+            onFileChange(event) {
+                this.form.image = event.target.files[0];
+                let reader  = new FileReader();
+                reader.addEventListener("load", function () {
+                    this.imagePreview = reader.result;
+                }.bind(this), false);
+                if( this.form.image ){
+                    if ( /\.(jpe?g|png|gif)$/i.test( this.form.image.name ) ) {
+                    reader.readAsDataURL( this.form.image );
+                    }
+                }
             },
             store() {
                 this.$Progress.start();
