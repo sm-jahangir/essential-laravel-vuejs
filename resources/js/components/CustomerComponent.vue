@@ -65,7 +65,7 @@
                                    <td>{{customer.address}}</td>
                                    <td>{{customer.total}}</td>
                                    <td>
-                                       <button type="button" class="btn btn-primary">Edit</button>
+                                       <button @click="edit(customer)" type="button" class="btn btn-primary">Edit</button>
                                        <button type="button" class="btn btn-danger">Delete</button>
                                    </td>
                                </tr>
@@ -95,6 +95,51 @@
                 </div>
                 <div class="modal-body">
                    <form @submit.prevent="store()" method="post">
+                       <div class="form-group">
+                         <label for="name">Name</label>
+                         <input type="text"
+                           class="form-control" v-model="form.name" name="name" id="name" placeholder="Enter Your Name">
+                       </div>
+                       <div class="form-group">
+                         <label for="email">Email</label>
+                         <input type="text"
+                           class="form-control" v-model="form.email" name="email" id="email" placeholder="Enter Your email">
+                       </div>
+                       <div class="form-group">
+                         <label for="phone">Phone</label>
+                         <input type="number"
+                           class="form-control" v-model="form.phone" name="phone" id="phone" placeholder="Enter Your phone">
+                       </div>
+                       <div class="form-group">
+                         <label for="address">Address</label>
+                         <textarea class="form-control" v-model="form.address" name="address" id="address" rows="3"></textarea>
+                       </div>
+                       <div class="form-group">
+                         <label for="total">Total</label>
+                         <input type="number"
+                           class="form-control" v-model="form.total" name="total" id="total" placeholder="Enter Your Amount">
+                       </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                   </form>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit Modal -->
+        <div class="modal fade" id="EditModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <form @submit.prevent="update()" method="post">
                        <div class="form-group">
                          <label for="name">Name</label>
                          <input type="text"
@@ -230,7 +275,37 @@ import Form from 'vform'
                 .catch(function (error) {
                     console.log(error);
                 });
-            }
+            },
+            edit(customer) {
+                this.form.reset();
+                this.form.clear();
+                this.form.fill(customer);
+                $("#EditModal").modal("show");
+            },
+            update() {
+                this.$Progress.start();
+                this.form.busy = true;
+                this.form
+                .put('/api/customer/'+this.form.id)
+                .then(response => {
+                    this.getData();
+                    $("#EditModal").modal("hide");
+                    if (this.form.successful) {
+                     this.$Progress.finish();
+                     this.$snotify.success("Customer Update Successfully");
+                    } else {
+                     this.$Progress.fail();
+                     this.$snotify.error(
+                         "Something went wrong try again later.",
+                         "Error"
+                     );
+                    }
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+          }
 
         },
     }
