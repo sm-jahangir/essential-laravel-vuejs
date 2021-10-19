@@ -2250,6 +2250,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -2379,7 +2391,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$Progress.start();
       this.form.busy = true;
-      this.form.put('/api/customer/' + this.form.id).then(function (response) {
+      this.form.post('/api/customer/' + this.form.id).then(function (response) {
         _this4.getData();
 
         $("#EditModal").modal("hide");
@@ -38442,6 +38454,27 @@ var render = function() {
                         return _c("tr", { key: customer.id }, [
                           _c("td", [_vm._v(_vm._s(index + 1))]),
                           _vm._v(" "),
+                          customer.image != null
+                            ? _c("td", [
+                                _c("img", {
+                                  staticStyle: { width: "120px" },
+                                  attrs: {
+                                    src:
+                                      "../storage/customer/" + customer.image,
+                                    alt: customer.image
+                                  }
+                                })
+                              ])
+                            : _c("td", [
+                                _c("img", {
+                                  staticStyle: { width: "120px" },
+                                  attrs: {
+                                    src: "../storage/customer/img1.jpg",
+                                    alt: customer.image
+                                  }
+                                })
+                              ]),
+                          _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(customer.name))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(customer.email))]),
@@ -38914,6 +38947,34 @@ var render = function() {
                       })
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "image" } }, [
+                        _vm._v("Image")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control-file",
+                        attrs: {
+                          type: "file",
+                          name: "image",
+                          id: "image",
+                          placeholder: "image"
+                        },
+                        on: { change: _vm.onFileChange }
+                      }),
+                      _vm._v(" "),
+                      _c("img", {
+                        attrs: {
+                          src:
+                            _vm.imagePreview == null
+                              ? "../storage/customer/" + _vm.form.image
+                              : _vm.imagePreview,
+                          width: "100",
+                          height: "100"
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
                     _vm._m(6)
                   ]
                 )
@@ -38950,6 +39011,8 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("IMAGE")]),
         _vm._v(" "),
         _c("th", [_vm._v("NAME")]),
         _vm._v(" "),

@@ -48,6 +48,7 @@
                            <thead>
                                <tr>
                                    <th>ID</th>
+                                   <th>IMAGE</th>
                                    <th>NAME</th>
                                    <th>EMAIL</th>
                                    <th>PHONE</th>
@@ -59,6 +60,12 @@
                            <tbody>
                                <tr v-for="(customer, index) in customers" :key="customer.id">
                                    <td>{{index+1}}</td>
+                                   <td v-if="customer.image !=null">
+                                       <img style="width:120px;" :src="'../storage/customer/'+customer.image" :alt="customer.image">
+                                   </td>
+                                   <td v-else>
+                                       <img style="width:120px;" :src="'../storage/customer/img1.jpg'" :alt="customer.image">
+                                   </td>
                                    <td>{{customer.name}}</td>
                                    <td>{{customer.email}}</td>
                                    <td>{{customer.phone}}</td>
@@ -169,6 +176,11 @@
                          <input type="number"
                            class="form-control" v-model="form.total" name="total" id="total" placeholder="Enter Your Amount">
                        </div>
+                       <div class="form-group">
+                         <label for="image">Image</label>
+                         <input type="file" @change="onFileChange" class="form-control-file" name="image" id="image" placeholder="image">
+                         <img v-bind:src="imagePreview == null ? '../storage/customer/'+form.image : imagePreview" width="100" height="100"/> 
+                       </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -201,7 +213,7 @@ import Form from 'vform'
                     phone: "",
                     address: "",
                     total: "",
-                    image: ""
+                    image: "",
                 }),
             }
         },
@@ -305,7 +317,7 @@ import Form from 'vform'
                 this.$Progress.start();
                 this.form.busy = true;
                 this.form
-                .put('/api/customer/'+this.form.id)
+                .post('/api/customer/'+this.form.id)
                 .then(response => {
                     this.getData();
                     $("#EditModal").modal("hide");
