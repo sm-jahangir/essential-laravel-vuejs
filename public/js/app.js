@@ -2378,6 +2378,57 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         console.log(error);
       });
+    },
+    destroy: function destroy(customer) {
+      var _this5 = this;
+
+      this.$snotify.clear();
+      this.$snotify.confirm('You can not recover this data again!', 'Are You Sure?', {
+        showProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        buttons: [{
+          text: 'Yes',
+          action: function action(toast) {
+            _this5.$snotify.remove(toast.id);
+
+            _this5.$Progress.start();
+
+            _this5.form["delete"]('/api/customer/' + customer.id).then(function (response) {
+              _this5.getData();
+
+              _this5.$Progress.finish();
+
+              _this5.$snotify.success("Customer Deleted Successfully");
+
+              console.log(response);
+            })["catch"](function (error) {
+              console.log(error);
+            });
+          },
+          bold: true
+        }, {
+          text: 'No',
+          action: function action() {
+            return console.log('Clicked: No');
+          }
+        }, {
+          text: 'Later',
+          action: function action(toast) {
+            console.log('Clicked: Later');
+
+            _this5.$snotify.remove(toast.id);
+          }
+        }, {
+          text: 'Close',
+          action: function action(toast) {
+            console.log('Clicked: No');
+
+            _this5.$snotify.remove(toast.id);
+          },
+          bold: true
+        }]
+      });
     }
   }
 });
@@ -38400,7 +38451,12 @@ var render = function() {
                               "button",
                               {
                                 staticClass: "btn btn-danger",
-                                attrs: { type: "button" }
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.destroy(customer)
+                                  }
+                                }
                               },
                               [_vm._v("Delete")]
                             )

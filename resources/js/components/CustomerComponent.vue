@@ -66,7 +66,7 @@
                                    <td>{{customer.total}}</td>
                                    <td>
                                        <button @click="edit(customer)" type="button" class="btn btn-primary">Edit</button>
-                                       <button type="button" class="btn btn-danger">Delete</button>
+                                       <button @click="destroy(customer)" type="button" class="btn btn-danger">Delete</button>
                                    </td>
                                </tr>
                            </tbody>
@@ -305,7 +305,42 @@ import Form from 'vform'
                 .catch(function (error) {
                     console.log(error);
                 });
-          }
+            },
+            destroy(customer) {
+                this.$snotify.clear();
+                this.$snotify.confirm(
+                    'You can not recover this data again!', 
+                    'Are You Sure?', 
+                    {
+                        showProgressBar: false,
+                        closeOnClick: false,
+                        pauseOnHover: true,
+                        buttons: [
+                            {
+                                text: 'Yes', 
+                                action: (toast) => {
+                                    this.$snotify.remove(toast.id);
+                                    this.$Progress.start();
+                                    this.form
+                                    .delete('/api/customer/'+ customer.id)
+                                    .then(response => {
+                                        this.getData();
+                                        this.$Progress.finish();
+                                        this.$snotify.success("Customer Deleted Successfully");
+                                        console.log(response);
+                                    })
+                                    .catch(function (error) {
+                                        console.log(error);
+                                    });
+                                }, 
+                                bold: true 
+                            },
+                            {text: 'No', action: () => console.log('Clicked: No')},
+                            {text: 'Later', action: (toast) => {console.log('Clicked: Later'); this.$snotify.remove(toast.id); } },
+                            {text: 'Close', action: (toast) => {console.log('Clicked: No'); this.$snotify.remove(toast.id); }, bold: true},
+                        ]
+                });
+            }
 
         },
     }
